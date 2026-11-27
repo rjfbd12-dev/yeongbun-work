@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>영분이가 만듦 | 메롱메롱</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --blue:#3182F6; --blue-dark:#1B64DA; --blue-light:#E8F3FF;
+    --g900:#191F28; --g800:#333D4B; --g700:#4E5968; --g600:#6B7684; --g500:#8B95A1;
+    --g300:#D1D6DB; --g200:#E5E8EB; --g100:#F2F4F6; --g50:#F9FAFB;
+    --red:#F04452; --green:#03B26C;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif;
+    color:var(--g900);background:#fff;line-height:1.6;letter-spacing:-0.02em;
+    -webkit-font-smoothing:antialiased;padding-bottom:96px;word-break:keep-all;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;border:0;cursor:pointer;letter-spacing:-0.02em}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--g100)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{font-weight:800;font-size:19px;display:flex;align-items:center;gap:8px}
+  .logo-mark{width:26px;height:26px;border-radius:8px;background:var(--blue);display:grid;place-items:center;color:#fff;font-size:14px;font-weight:800}
+  .nav-links{display:flex;gap:28px;font-size:15px;color:var(--g700);font-weight:500}
+  .nav-links a:hover{color:var(--g900)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:700;border-radius:14px;transition:.15s}
+  .btn-sm{height:38px;padding:0 16px;font-size:14px;border-radius:10px}
+  .btn-lg{height:58px;padding:0 28px;font-size:17px}
+  .btn-blue{background:var(--blue);color:#fff}
+  .btn-blue:hover{background:var(--blue-dark)}
+  .btn-blue:active{transform:scale(.97)}
+  .btn-gray{background:var(--g100);color:var(--g800)}
+  .btn-gray:hover{background:var(--g200)}
+
+  /* HERO */
+  .hero{padding:72px 0 56px}
+  .hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--blue);font-weight:700;font-size:14px;padding:7px 12px;border-radius:999px}
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--blue)}
+  h1{font-size:44px;line-height:1.3;font-weight:800;margin:20px 0 18px;letter-spacing:-0.03em}
+  h1 em{font-style:normal;color:var(--blue)}
+  .hero-sub{font-size:19px;color:var(--g700);margin-bottom:32px}
+  .price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:24px}
+  .price{font-size:34px;font-weight:800}
+  .price-note{font-size:15px;color:var(--g600)}
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+  .hero-meta{display:flex;gap:18px;margin-top:22px;font-size:14px;color:var(--g600);flex-wrap:wrap}
+  .hero-meta span::before{content:"✓";color:var(--blue);font-weight:800;margin-right:5px}
+
+  /* BOOK MOCKUP */
+  .book-stage{background:var(--g100);border-radius:32px;aspect-ratio:1/1.05;display:grid;place-items:center;position:relative;overflow:hidden}
+  .book{width:62%;aspect-ratio:1/1.38;border-radius:6px 14px 14px 6px;position:relative;
+    background:linear-gradient(165deg,#0B1B3F 0%,#14306B 55%,#1E4FA8 100%);
+    box-shadow:0 30px 60px -20px rgba(20,40,90,.45),inset 6px 0 0 rgba(255,255,255,.08);
+    padding:22px 20px;color:#fff;display:flex;flex-direction:column;transform:rotate(-4deg);overflow:hidden}
+  .book::after{content:"";position:absolute;left:0;top:0;bottom:0;width:10px;background:linear-gradient(90deg,rgba(0,0,0,.25),transparent)}
+  .lights{position:absolute;inset:0;pointer-events:none}
+  .lights i{position:absolute;border-radius:50%;background:#FFE08A;box-shadow:0 0 10px 3px rgba(255,224,138,.7)}
+  .book-tag{font-size:11px;font-weight:700;opacity:.8;letter-spacing:.04em;position:relative}
+  .book-title{font-size:25px;font-weight:800;line-height:1.3;margin-top:10px;position:relative}
+  .book-desc{font-size:12px;opacity:.75;margin-top:8px;position:relative}
+  .book-wave{margin-top:auto;position:relative;height:56px}
+  .book-wave svg{width:100%;height:100%}
+  .book-foot{display:flex;justify-content:space-between;font-size:11px;opacity:.85;position:relative;margin-top:8px}
+  .float-chip{position:absolute;background:#fff;border-radius:16px;padding:12px 14px;box-shadow:0 10px 30px -10px rgba(0,0,0,.18);font-size:13px;font-weight:600}
+  .float-chip b{display:block;font-size:17px;color:var(--blue)}
+  .chip-1{top:9%;right:7%}
+  .chip-2{bottom:5%;left:5%}
+
+  /* SECTIONS */
+  section{padding:72px 0}
+  .sec-gray{background:var(--g50)}
+  .eyebrow{color:var(--blue);font-weight:700;font-size:15px;margin-bottom:10px}
+  h2{font-size:34px;line-height:1.35;font-weight:800;letter-spacing:-0.03em;margin-bottom:14px}
+  .sec-desc{font-size:17px;color:var(--g700);margin-bottom:40px}
+
+  /* INFO STRIP */
+  .info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .info-card{background:#fff;border:1px solid var(--g200);border-radius:var(--radius);padding:24px}
+  .info-card .k{font-size:14px;color:var(--g600);font-weight:500}
+  .info-card .v{font-size:26px;font-weight:800;margin-top:6px}
+  .info-card .s{font-size:13px;color:var(--g500);margin-top:4px}
+
+  /* RECOMMEND */
+  .rec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .rec{background:#fff;border-radius:var(--radius);padding:28px;display:flex;gap:18px;align-items:flex-start;border:1px solid var(--g100)}
+  .rec-ic{flex:0 0 48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--blue-light)}
+  .rec-ic svg{width:24px;height:24px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .rec h3{font-size:19px;font-weight:700;margin-bottom:4px}
+  .rec p{font-size:15px;color:var(--g700)}
+
+  /* FACTS */
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .fact{background:var(--g100);border-radius:var(--radius);padding:28px}
+  .fact .label{display:inline-block;font-size:13px;font-weight:700;color:var(--g700);background:#fff;border-radius:8px;padding:4px 8px;margin-bottom:14px}
+  .fact h3{font-size:21px;font-weight:800;margin-bottom:12px}
+  .fact ul{list-style:none;font-size:15px;color:var(--g700)}
+  .fact li{padding:5px 0;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--g200)}
+  .fact li:last-child{border-bottom:0}
+  .fact li b{color:var(--g900);font-weight:600;text-align:right}
+
+  /* PREVIEW */
+  .tabs{display:inline-flex;background:var(--g100);border-radius:14px;padding:4px;gap:4px;margin-bottom:20px;flex-wrap:wrap}
+  .tab{background:transparent;color:var(--g600);font-weight:600;font-size:15px;padding:10px 18px;border-radius:10px}
+  .tab.on{background:#fff;color:var(--g900);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  .free-badge{display:inline-block;font-size:11px;font-weight:800;color:var(--green);background:#E5F8EF;border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:2px}
+  .paid-badge{display:inline-block;font-size:11px;font-weight:800;color:var(--blue);background:var(--blue-light);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:2px}
+  .page-sheet{background:#fff;border:1px solid var(--g200);border-radius:24px;padding:36px;box-shadow:0 12px 40px -24px rgba(0,0,0,.2)}
+  .sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--g100)}
+  .sheet-head h3{font-size:22px;font-weight:800}
+  .sheet-head .pg{font-size:13px;color:var(--g500);font-weight:600}
+  .panel{display:none}
+  .panel.on{display:block}
+  .timeline{list-style:none;position:relative}
+  .day-title{font-weight:800;font-size:16px;color:var(--blue);margin:8px 0 12px}
+  .tl{display:grid;grid-template-columns:70px 1fr;gap:16px;padding:14px 0;border-bottom:1px dashed var(--g200)}
+  .tl:last-child{border-bottom:0}
+  .tl time{font-weight:800;font-size:16px;color:var(--g800)}
+  .tl h4{font-size:17px;font-weight:700;margin-bottom:2px}
+  .tl p{font-size:14px;color:var(--g600)}
+  .budget{width:100%;border-collapse:collapse;font-size:15px}
+  .budget th{text-align:left;color:var(--g600);font-weight:600;font-size:13px;padding:10px 0;border-bottom:1px solid var(--g200)}
+  .budget td{padding:16px 0;border-bottom:1px solid var(--g100);vertical-align:top}
+  .budget td:last-child,.budget th:last-child{text-align:right}
+  .budget td small{display:block;color:var(--g500);font-size:13px}
+  .budget tr.total td{border-bottom:0;font-weight:800;font-size:18px;padding-top:20px}
+  .budget tr.total td:last-child{color:var(--blue)}
+  .src{font-size:12px;color:var(--g500);margin-top:18px}
+
+  .locked-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px}
+  .locked{position:relative;border-radius:var(--radius);border:1px solid var(--g200);background:#fff;padding:24px;overflow:hidden;min-height:180px}
+  .locked h4{font-size:17px;font-weight:700;margin-bottom:12px}
+  .blur-lines{filter:blur(5px);user-select:none;pointer-events:none}
+  .blur-lines div{height:12px;border-radius:6px;background:var(--g200);margin:10px 0}
+  .lock-over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.92) 60%);text-align:center;padding:20px}
+  .lock-over .lk{width:40px;height:40px;border-radius:50%;background:var(--g900);display:grid;place-items:center}
+  .lock-over .lk svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.2}
+  .lock-over b{font-size:16px}
+  .lock-over span{font-size:13px;color:var(--g600)}
+
+  /* COMPARE */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .plan{border-radius:24px;padding:32px;border:1px solid var(--g200);background:#fff}
+  .plan.paid{border:2px solid var(--blue);position:relative}
+  .plan.paid::before{content:"추천";position:absolute;top:-13px;left:28px;background:var(--blue);color:#fff;font-size:13px;font-weight:700;padding:4px 12px;border-radius:999px}
+  .plan h3{font-size:20px;font-weight:800}
+  .plan .pp{font-size:30px;font-weight:800;margin:6px 0 20px}
+  .plan ul{list-style:none;font-size:15px}
+  .plan li{padding:9px 0;display:flex;gap:10px;color:var(--g800)}
+  .plan li.no{color:var(--g500)}
+  .plan li::before{content:"✓";font-weight:800;color:var(--blue)}
+  .plan li.no::before{content:"–";color:var(--g300)}
+  .plan .btn{width:100%;margin-top:22px}
+
+  /* TOC */
+  .toc{background:#fff;border-radius:24px;border:1px solid var(--g200);overflow:hidden}
+  .toc-row{display:flex;align-items:center;gap:16px;padding:18px 28px;border-bottom:1px solid var(--g100)}
+  .toc-row:last-child{border-bottom:0}
+  .toc-no{width:30px;height:30px;border-radius:9px;background:var(--g100);display:grid;place-items:center;font-weight:800;font-size:14px;color:var(--g700);flex:0 0 30px}
+  .toc-row.extra .toc-no{background:var(--blue-light);color:var(--blue)}
+  .toc-name{flex:1;font-weight:600;font-size:16px}
+  .toc-name small{display:block;font-weight:400;font-size:14px;color:var(--g600)}
+  .toc-pg{font-size:14px;color:var(--g500);font-weight:600;white-space:nowrap}
+  .toc-sum{display:flex;justify-content:space-between;background:var(--g50);padding:18px 28px;font-weight:800}
+  .toc-sum span:last-child{color:var(--blue)}
+
+  /* FAQ */
+  .faq{max-width:760px}
+  details{border-bottom:1px solid var(--g200)}
+  summary{list-style:none;cursor:pointer;padding:22px 4px;font-size:17px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary .q{color:var(--blue);margin-right:10px}
+  summary .arr{transition:.2s;color:var(--g500);font-size:14px}
+  details[open] summary .arr{transform:rotate(180deg)}
+  details p{padding:0 4px 22px 30px;color:var(--g700);font-size:15px}
+
+  /* FINAL CTA */
+  .final{background:var(--g900);color:#fff;border-radius:32px;padding:64px 40px;text-align:center}
+  .final h2{color:#fff}
+  .final p{color:#B0B8C1;font-size:17px;margin-bottom:30px}
+
+  footer{padding:40px 0 20px;font-size:13px;color:var(--g500)}
+  footer b{color:var(--g700)}
+
+  /* STICKY BAR */
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#fff;border-top:1px solid var(--g200);transform:translateY(100%);transition:transform .25s}
+  .sticky.show{transform:none}
+  .sticky .wrap{display:flex;align-items:center;justify-content:space-between;height:80px;gap:16px}
+  .sticky .t{font-size:14px;color:var(--g600)}
+  .sticky .t b{display:block;font-size:19px;color:var(--g900)}
+  .sticky .btn{height:52px;padding:0 32px}
+
+  /* MODAL */
+  .dim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none;align-items:flex-end;justify-content:center}
+  .dim.on{display:flex}
+  .sheet{background:#fff;width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:28px 24px 24px;animation:up .25s ease}
+  @media(min-width:700px){.dim{align-items:center}.sheet{border-radius:28px}}
+  @keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+  .sheet h3{font-size:22px;font-weight:800;margin-bottom:6px}
+  .sheet .sd{color:var(--g600);font-size:15px;margin-bottom:22px}
+  .order{background:var(--g50);border-radius:16px;padding:18px 20px;font-size:15px}
+  .order div{display:flex;justify-content:space-between;padding:6px 0;color:var(--g700)}
+  .order div b{color:var(--g900)}
+  .order .tot{border-top:1px solid var(--g200);margin-top:8px;padding-top:14px;font-weight:800;color:var(--g900);font-size:17px}
+  .order .tot b{color:var(--blue)}
+  .sheet .btns{display:flex;gap:8px;margin-top:20px}
+  .sheet .btns .btn{flex:1;height:54px;font-size:16px}
+  .toast{position:fixed;left:50%;bottom:110px;transform:translate(-50%,20px);background:var(--g900);color:#fff;padding:14px 22px;border-radius:14px;font-size:15px;font-weight:600;opacity:0;transition:.25s;z-index:100;pointer-events:none;white-space:nowrap}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+
+  /* RESPONSIVE */
+  @media(max-width:860px){
+    .hero .wrap{grid-template-columns:1fr}
+    .book-stage{max-width:420px;width:100%;margin:0 auto}
+    h1{font-size:34px}
+    h2{font-size:27px}
+    .info-grid{grid-template-columns:repeat(2,1fr)}
+    .rec-grid,.facts,.locked-grid,.compare{grid-template-columns:1fr}
+    .nav-links{display:none}
+    .page-sheet{padding:24px 20px}
+    section{padding:56px 0}
+    .final{padding:48px 24px}
+    .tl{grid-template-columns:56px 1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap">
+    <a href="#" class="logo"><span class="logo-mark">메</span>메롱메롱</a>
+    <nav class="nav-links">
+      <a href="#info">상품 정보</a>
+      <a href="#for">추천 대상</a>
+      <a href="#preview">미리보기</a>
+      <a href="#toc">상품 구성</a>
+      <a href="#faq">자주 묻는 질문</a>
+    </nav>
+    <button class="btn btn-blue btn-sm js-buy">구매하기</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="pill"><span class="dot"></span>2026 해운대 빛축제 시즌판</span>
+      <h1>영분이가 만듦</h1>
+      <p class="hero-sub">코스 · 숙소 · 축제 · 예산을 32쪽에 정리했어요.<br>결제하면 바로 PDF로 받아볼 수 있어요.</p>
+      <div class="price-row">
+        <span class="price">6,900원</span>
+        <span class="price-note">PDF 32쪽 · 평생 소장</span>
+      </div>
+      <div class="hero-cta">
+        <button class="btn btn-blue btn-lg js-buy">지금 구매하기</button>
+        <a href="#preview" class="btn btn-gray btn-lg">무료로 미리보기</a>
+      </div>
+      <div class="hero-meta">
+        <span>결제 즉시 다운로드</span>
+        <span>모바일 · PC 모두 OK</span>
+        <span>다운로드 전 7일 내 환불</span>
+      </div>
+    </div>
+
+    <div class="book-stage" aria-hidden="true">
+      <div class="book">
+        <div class="lights" id="lights"></div>
+        <div class="book-tag">WEEKEND ONE BOOK · BUSAN</div>
+        <div class="book-title">해운대<br>겨울 1박 2일<br>가이드북</div>
+        <div class="book-desc">빛축제 · 크리스마스 빌리지 · 숙소 · 예산</div>
+        <div class="book-wave">
+          <svg viewBox="0 0 200 56" preserveAspectRatio="none"><path d="M0 30 Q25 18 50 30 T100 30 T150 30 T200 30 V56 H0Z" fill="rgba(255,255,255,.12)"/><path d="M0 40 Q25 30 50 40 T100 40 T150 40 T200 40 V56 H0Z" fill="rgba(255,255,255,.2)"/></svg>
+        </div>
+        <div class="book-foot"><span>2026 시즌판</span><span>32p</span></div>
+      </div>
+      <div class="float-chip chip-1">빛축제 입장료<b>무료</b></div>
+      <div class="float-chip chip-2">해운대역 도보<b>3~5분 숙소 3곳</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT INFO -->
+<section id="info" class="sec-gray">
+  <div class="wrap">
+    <p class="eyebrow">상품 정보</p>
+    <h2>이런 상품이에요</h2>
+    <p class="sec-desc">한국관광공사 축제 정보와 여기어때 숙소 정보를 바탕으로 만든 여행 가이드북이에요.</p>
+    <div class="info-grid">
+      <div class="info-card"><div class="k">분량</div><div class="v">총 32쪽</div><div class="s">본문 7장 + 부록 2종</div></div>
+      <div class="info-card"><div class="k">가격</div><div class="v">6,900원</div><div class="s">추가 결제 없음</div></div>
+      <div class="info-card"><div class="k">형식</div><div class="v">PDF</div><div class="s">결제 즉시 다운로드</div></div>
+      <div class="info-card"><div class="k">여행 기준</div><div class="v">1박 2일</div><div class="s">2인 · 주말 출발 기준</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMEND -->
+<section id="for">
+  <div class="wrap">
+    <p class="eyebrow">이런 분들께 추천해요</p>
+    <h2>이번 겨울, 해운대를 생각 중이라면</h2>
+    <p class="sec-desc">아래 중 하나라도 해당된다면 이 가이드북이 시간을 아껴드릴 거예요.</p>
+    <div class="rec-grid">
+      <div class="rec">
+        <div class="rec-ic"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.9H22l-6 4.6 2.3 7L12 16l-6.3 4.5 2.3-7-6-4.6h7.6z"/></svg></div>
+        <div><h3>빛축제와 크리스마스 마켓을 한 번에</h3><p>낮엔 크리스마스 빌리지, 밤엔 해운대 빛축제. 두 행사를 하루에 묶는 동선이 필요한 분</p></div>
+      </div>
+      <div class="rec">
+        <div class="rec-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M10 22l1-7-3-3 2-5h4l2 5-3 3 1 7"/></svg></div>
+        <div><h3>차 없이 걸어서 다니는 뚜벅이</h3><p>해운대역에서 걸어서 3~5분 거리 숙소만 골라 비교했어요. 짐 끌고 헤맬 일이 없어요</p></div>
+      </div>
+      <div class="rec">
+        <div class="rec-ic"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/></svg></div>
+        <div><h3>1박 15만 원 안쪽으로 숙소를 찾는 분</h3><p>2인 1박 8만 원대부터 11만 원대까지, 평점 9.0 이상 숙소만 모았어요</p></div>
+      </div>
+      <div class="rec">
+        <div class="rec-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <div><h3>부산 겨울 여행이 처음이라 막막한 분</h3><p>몇 시에 어디로 가야 하는지 시간표로 정리돼 있어서 그대로 따라가기만 하면 돼요</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY FACTS -->
+<section class="sec-gray">
+  <div class="wrap">
+    <p class="eyebrow">가이드북에 담긴 핵심 정보</p>
+    <h2>검색 대신, 필요한 것만 골라 담았어요</h2>
+    <p class="sec-desc">운영시간 · 장소 · 요금처럼 출발 전에 꼭 알아야 할 정보를 한눈에 볼 수 있어요.</p>
+    <div class="facts">
+      <div class="fact">
+        <span class="label">축제 1</span>
+        <h3>해운대 빛축제</h3>
+        <ul>
+          <li>기간<b>26.11.28 ~ 27.01.10</b></li>
+          <li>시간<b>매일 18:00 ~ 23:00</b></li>
+          <li>장소<b>구남로 · 해운대해수욕장</b></li>
+          <li>요금<b>무료</b></li>
+        </ul>
+      </div>
+      <div class="fact">
+        <span class="label">축제 2</span>
+        <h3>크리스마스 빌리지 부산</h3>
+        <ul>
+          <li>기간<b>26.11.26 ~ 12.25</b></li>
+          <li>평일<b>16:00 ~ 22:00</b></li>
+          <li>주말<b>11:00 ~ 22:00</b></li>
+          <li>장소<b>영화의전당</b></li>
+        </ul>
+      </div>
+      <div class="fact">
+        <span class="label">숙소</span>
+        <h3>해운대역 도보권 3곳</h3>
+        <ul>
+          <li>최저가<b>1박 82,000원부터</b></li>
+          <li>최고 평점<b>9.3</b></li>
+          <li>역까지<b>도보 3~5분</b></li>
+          <li>기준<b>2인 1박</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREVIEW -->
+<section id="preview">
+  <div class="wrap">
+    <p class="eyebrow">미리보기</p>
+    <h2>기본 코스와 예산은 무료로 먼저 보여드려요</h2>
+    <p class="sec-desc">본문 일부를 그대로 공개해요. 취향별 코스와 숙소 심층 자료는 구매 후 볼 수 있어요.</p>
+
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-tab="p1">기본 코스<span class="free-badge">무료</span></button>
+      <button class="tab" data-tab="p2">예산 정리<span class="free-badge">무료</span></button>
+      <button class="tab" data-tab="p3">빛축제 즐기는 법<span class="free-badge">무료</span></button>
+    </div>
+
+    <div class="page-sheet">
+      <!-- 기본 코스 -->
+      <div class="panel on" id="p1">
+        <div class="sheet-head"><h3>한눈에 보는 1박 2일 기본 코스</h3><span class="pg">본문 p.4 ~ 7 중 일부</span></div>
+        <ul class="timeline">
+          <li class="day-title">DAY 1 · 토요일</li>
+          <li class="tl"><time>11:00</time><div><h4>영화의전당 크리스마스 빌리지</h4><p>주말엔 오전 11시부터 열려요. 눈 내리는 광장, 대형 트리, 산타 퍼레이드와 성가대 공연을 낮에 여유 있게 즐겨요.</p></div></li>
+          <li class="tl"><time>15:00</time><div><h4>해운대역 근처 숙소로 이동</h4><p>역에서 걸어서 3~5분 거리라 짐 맡기고 잠깐 쉬어가기 좋아요.</p></div></li>
+          <li class="tl"><time>18:00</time><div><h4>구남로 빛축제 시작</h4><p>불이 켜지는 시간에 맞춰 해운대스퀘어로. 약 30m 빛의 터널과 대형 다이버 조형물부터 만나요.</p></div></li>
+          <li class="tl"><time>19:30</time><div><h4>해운대해수욕장 백사장</h4><p>크리스마스트리 숲과 백사장 위 12m 배 조형물. 주말엔 야광 바다팔찌 · 무드등 만들기 체험도 있어요.</p></div></li>
+          <li class="day-title" style="margin-top:20px">DAY 2 · 일요일</li>
+          <li class="tl"><time>아침</time><div><h4>숙소 조식 후 해변 산책</h4><p>조식이 포함된 숙소라면 든든하게 먹고, 낮의 해운대 바다를 한 번 더 걸어요.</p></div></li>
+          <li class="tl"><time>오전</time><div><h4>체크아웃 · 귀가</h4><p>해운대역에서 바로 출발. 남은 시간 활용 코스는 본문 6장 취향별 코스에 있어요.</p></div></li>
+        </ul>
+      </div>
+
+      <!-- 예산 -->
+      <div class="panel" id="p2">
+        <div class="sheet-head"><h3>2인 1박 예산 정리</h3><span class="pg">본문 p.27 ~ 29 중 일부</span></div>
+        <table class="budget">
+          <thead><tr><th>항목</th><th>금액 (2인 기준)</th></tr></thead>
+          <tbody>
+            <tr><td>숙소 1박<small>해운대역 도보권 3곳, 평점 9.0 이상</small></td><td>82,000 ~ 115,000원</td></tr>
+            <tr><td>해운대 빛축제<small>구남로 · 해운대해수욕장</small></td><td>0원</td></tr>
+            <tr><td>크리스마스 빌리지 입장<small>유료 · YES24 예매</small></td><td>예매처 가격 확인</td></tr>
+            <tr><td>식비 · 교통비<small>부록 예산 계산표에 직접 입력</small></td><td>개인별 상이</td></tr>
+            <tr class="total"><td>숙소 + 빛축제</td><td>82,000원부터</td></tr>
+          </tbody>
+        </table>
+        <p class="src">※ 숙소 요금은 2026.11.20 여기어때 조회 기준이며, 날짜와 예약 시점에 따라 달라질 수 있어요.</p>
+      </div>
+
+      <!-- 빛축제 -->
+      <div class="panel" id="p3">
+        <div class="sheet-head"><h3>해운대 빛축제 즐기는 법</h3><span class="pg">본문 p.8 ~ 12 중 일부</span></div>
+        <ul class="timeline">
+          <li class="tl"><time>주제</time><div><h4>2026 '딥 다이브 해운대'</h4><p>바닷속으로 들어가는 콘셉트로, 다이버 조형물과 미디어아트가 중심이에요.</p></div></li>
+          <li class="tl"><time>구역 1</time><div><h4>해운대스퀘어(구남로)</h4><p>약 30m 길이의 빛의 터널, 대형 다이버 조형물 · 미디어아트</p></div></li>
+          <li class="tl"><time>구역 2</time><div><h4>해운대해수욕장 일원</h4><p>크리스마스트리 숲, 백사장 위 12m 배 조형물</p></div></li>
+          <li class="tl"><time>주말</time><div><h4>체험 프로그램</h4><p>야광 바다팔찌 만들기, 무드등 만들기</p></div></li>
+          <li class="tl"><time>문의</time><div><h4>해운대구 051-749-4062</h4><p>매일 18:00 ~ 23:00 운영, 입장료 무료</p></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="locked-grid">
+      <div class="locked">
+        <h4>취향별 코스 3가지<span class="paid-badge">유료</span></h4>
+        <div class="blur-lines"><div style="width:90%"></div><div style="width:70%"></div><div style="width:80%"></div><div style="width:55%"></div></div>
+        <div class="lock-over"><div class="lk"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div><b>커플 · 친구 · 가족 코스</b><span>일행 취향에 맞춘 시간표 3종</span></div>
+      </div>
+      <div class="locked">
+        <h4>숙소 3곳 심층 비교<span class="paid-badge">유료</span></h4>
+        <div class="blur-lines"><div style="width:85%"></div><div style="width:60%"></div><div style="width:75%"></div><div style="width:65%"></div></div>
+        <div class="lock-over"><div class="lk"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div><b>객실 타입 · 조식 · 주차 · OTT</b><span>객실별 요금과 고르는 기준까지</span></div>
+      </div>
+      <div class="locked">
+        <h4>크리스마스 빌리지 공략<span class="paid-badge">유료</span></h4>
+        <div class="blur-lines"><div style="width:80%"></div><div style="width:90%"></div><div style="width:50%"></div><div style="width:70%"></div></div>
+        <div class="lock-over"><div class="lk"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div><b>퍼레이드 · 공연 · 선물 상점</b><span>놓치지 말아야 할 프로그램 정리</span></div>
+      </div>
+      <div class="locked">
+        <h4>출발 전 체크리스트 · 예산 계산표<span class="paid-badge">유료</span></h4>
+        <div class="blur-lines"><div style="width:65%"></div><div style="width:85%"></div><div style="width:70%"></div><div style="width:90%"></div></div>
+        <div class="lock-over"><div class="lk"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div><b>부록 2종</b><span>인쇄해서 바로 쓰는 양식</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE vs PAID -->
+<section class="sec-gray">
+  <div class="wrap">
+    <p class="eyebrow">무료 vs 유료</p>
+    <h2>무료로 보는 것, 구매하면 받는 것</h2>
+    <p class="sec-desc">미리보기만으로도 기본 일정은 짤 수 있어요. 더 자세한 자료가 필요하다면 전체 버전을 받아보세요.</p>
+    <div class="compare">
+      <div class="plan">
+        <h3>무료 미리보기</h3>
+        <div class="pp">0원</div>
+        <ul>
+          <li>1박 2일 기본 코스</li>
+          <li>2인 1박 예산 요약</li>
+          <li>해운대 빛축제 기본 정보</li>
+          <li class="no">취향별 코스 3가지</li>
+          <li class="no">숙소 3곳 심층 비교</li>
+          <li class="no">크리스마스 빌리지 공략</li>
+          <li class="no">체크리스트 · 예산 계산표</li>
+        </ul>
+        <a href="#preview" class="btn btn-gray btn-lg">미리보기 다시 보기</a>
+      </div>
+      <div class="plan paid">
+        <h3>전체 가이드북 PDF</h3>
+        <div class="pp">6,900원</div>
+        <ul>
+          <li>1박 2일 기본 코스</li>
+          <li>2인 1박 예산 요약</li>
+          <li>해운대 빛축제 기본 정보</li>
+          <li>취향별 코스 3가지</li>
+          <li>숙소 3곳 심층 비교</li>
+          <li>크리스마스 빌리지 공략</li>
+          <li>체크리스트 · 예산 계산표</li>
+        </ul>
+        <button class="btn btn-blue btn-lg js-buy">지금 구매하기</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOC -->
+<section id="toc">
+  <div class="wrap">
+    <p class="eyebrow">상품 구성</p>
+    <h2>32쪽, 이렇게 구성돼 있어요</h2>
+    <p class="sec-desc">본문 7장과 바로 쓸 수 있는 부록 2종이 들어 있어요.</p>
+    <div class="toc">
+      <div class="toc-row"><span class="toc-no">1</span><span class="toc-name">들어가며 · 이 책 사용법<small>여행 기준(1박 2일 · 2인 · 주말)과 보는 순서</small></span><span class="toc-pg">p.1 ~ 3</span></div>
+      <div class="toc-row"><span class="toc-no">2</span><span class="toc-name">한눈에 보는 1박 2일 기본 코스<small>시간대별 동선 정리 <span class="free-badge">무료 공개</span></small></span><span class="toc-pg">p.4 ~ 7</span></div>
+      <div class="toc-row"><span class="toc-no">3</span><span class="toc-name">해운대 빛축제 완전 정복<small>구역별 볼거리, 주말 체험 프로그램</small></span><span class="toc-pg">p.8 ~ 12</span></div>
+      <div class="toc-row"><span class="toc-no">4</span><span class="toc-name">크리스마스 빌리지 부산 2026<small>운영시간, 예매 방법, 프로그램</small></span><span class="toc-pg">p.13 ~ 16</span></div>
+      <div class="toc-row"><span class="toc-no">5</span><span class="toc-name">해운대역 도보권 숙소 3곳 비교<small>요금 · 평점 · 조식 · 주차 · 객실 타입</small></span><span class="toc-pg">p.17 ~ 21</span></div>
+      <div class="toc-row"><span class="toc-no">6</span><span class="toc-name">취향별 코스 3가지<small>커플 · 친구 · 가족 일정표</small></span><span class="toc-pg">p.22 ~ 26</span></div>
+      <div class="toc-row"><span class="toc-no">7</span><span class="toc-name">2인 1박 예산 정리<small>항목별 비용 요약 <span class="free-badge">무료 공개</span></small></span><span class="toc-pg">p.27 ~ 29</span></div>
+      <div class="toc-row extra"><span class="toc-no">+</span><span class="toc-name">부록 1. 출발 전 체크리스트<small>예매 · 짐 · 날씨 대비 항목</small></span><span class="toc-pg">p.30 ~ 31</span></div>
+      <div class="toc-row extra"><span class="toc-no">+</span><span class="toc-name">부록 2. 예산 계산표<small>식비 · 교통비를 직접 적어 쓰는 양식</small></span><span class="toc-pg">p.32</span></div>
+      <div class="toc-sum"><span>합계</span><span>총 32쪽 · PDF</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="sec-gray">
+  <div class="wrap">
+    <p class="eyebrow">자주 묻는 질문</p>
+    <h2>궁금한 점이 있으신가요?</h2>
+    <div class="faq" style="margin-top:28px">
+      <details open>
+        <summary><span><span class="q">Q</span>언제 다운로드할 수 있나요?</span><span class="arr">▼</span></summary>
+        <p>결제가 끝나면 바로 다운로드 버튼이 나타나요. 입력하신 이메일로도 다운로드 링크를 함께 보내드려요.</p>
+      </details>
+      <details>
+        <summary><span><span class="q">Q</span>환불이 되나요?</span><span class="arr">▼</span></summary>
+        <p>파일을 다운로드하기 전이라면 결제일로부터 7일 이내에 전액 환불해 드려요. 디지털 파일 특성상 다운로드한 뒤에는 환불이 어려워요.</p>
+      </details>
+      <details>
+        <summary><span><span class="q">Q</span>휴대폰으로도 볼 수 있나요?</span><span class="arr">▼</span></summary>
+        <p>네. PDF 파일이라 휴대폰, 태블릿, PC 어디서든 열 수 있어요. 여행 중에는 휴대폰에 저장해 두고 보시면 편해요.</p>
+      </details>
+      <details>
+        <summary><span><span class="q">Q</span>숙소 요금이 지금이랑 다르면요?</span><span class="arr">▼</span></summary>
+        <p>숙소 요금은 2026년 11월 20일 여기어때 조회 기준이에요. 예약 날짜와 시점에 따라 달라질 수 있으니 예약 전 한 번 더 확인해 주세요.</p>
+      </details>
+      <details>
+        <summary><span><span class="q">Q</span>어떤 날짜에 가면 좋나요?</span><span class="arr">▼</span></summary>
+        <p>빛축제(11.28 ~ 1.10)와 크리스마스 빌리지(11.26 ~ 12.25)가 함께 열리는 11월 말부터 12월 25일 사이 주말이 가장 좋아요. 기본 코스도 이 기간 토요일 출발 기준으로 짰어요.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section>
+  <div class="wrap">
+    <div class="final">
+      <h2>올겨울 해운대,<br>헤매지 말고 즐기기만 하세요</h2>
+      <p>32쪽 가이드북 PDF · 6,900원 · 결제 즉시 다운로드</p>
+      <button class="btn btn-blue btn-lg js-buy" style="min-width:260px">지금 다운로드하기</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>메롱메롱</b> · 여행 가이드북 PDF 스토어</p>
+    <p style="margin-top:6px">축제 정보 출처: 한국관광공사 TourAPI / 숙소 정보 출처: 여기어때 (2026.11.20 조회 기준)</p>
+    <p style="margin-top:6px">© 2026 메롱메롱. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- STICKY BAR -->
+<div class="sticky" id="sticky">
+  <div class="wrap">
+    <div class="t">해운대 겨울 1박 2일 가이드북 · 32쪽<b>6,900원</b></div>
+    <button class="btn btn-blue js-buy">구매하기</button>
+  </div>
+</div>
+
+<!-- PURCHASE MODAL -->
+<div class="dim" id="dim" role="dialog" aria-modal="true" aria-labelledby="mt">
+  <div class="sheet">
+    <h3 id="mt">주문 내용을 확인해 주세요</h3>
+    <p class="sd">결제가 끝나면 바로 PDF를 받을 수 있어요.</p>
+    <div class="order">
+      <div>상품<b>해운대 겨울 1박 2일 가이드북</b></div>
+      <div>구성<b>PDF 32쪽 (부록 2종 포함)</b></div>
+      <div>받는 방법<b>즉시 다운로드 + 이메일</b></div>
+      <div class="tot">결제 금액<b>6,900원</b></div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-gray" id="cancel">취소</button>
+      <button class="btn btn-blue" id="pay">6,900원 결제하기</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast">구매해 주셔서 감사해요! (결제 기능은 데모예요)</div>
+
+<script>
+  // 표지 불빛 점
+  (function(){
+    var box=document.getElementById('lights');
+    for(var i=0;i<22;i++){
+      var d=document.createElement('i');
+      var s=2+Math.random()*3;
+      d.style.width=d.style.height=s+'px';
+      d.style.left=(Math.random()*95)+'%';
+      d.style.top=(35+Math.random()*40)+'%';
+      d.style.opacity=(.5+Math.random()*.5);
+      box.appendChild(d);
+    }
+  })();
+
+  // 미리보기 탭
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+      document.querySelectorAll('.panel').forEach(function(x){x.classList.remove('on')});
+      t.classList.add('on');
+      document.getElementById(t.dataset.tab).classList.add('on');
+    });
+  });
+
+  // 구매 모달
+  var dim=document.getElementById('dim'), toast=document.getElementById('toast');
+  document.querySelectorAll('.js-buy').forEach(function(b){
+    b.addEventListener('click',function(){dim.classList.add('on')});
+  });
+  document.getElementById('cancel').addEventListener('click',function(){dim.classList.remove('on')});
+  dim.addEventListener('click',function(e){if(e.target===dim)dim.classList.remove('on')});
+  document.getElementById('pay').addEventListener('click',function(){
+    dim.classList.remove('on');
+    toast.classList.add('on');
+    setTimeout(function(){toast.classList.remove('on')},2600);
+  });
+
+  // 하단 고정 구매 바
+  var sticky=document.getElementById('sticky');
+  window.addEventListener('scroll',function(){
+    sticky.classList.toggle('show',window.scrollY>520);
+  });
+</script>
+</body>
+</html>
